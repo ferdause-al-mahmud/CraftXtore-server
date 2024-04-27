@@ -43,6 +43,19 @@ async function run() {
             const result = await collection.findOne(query);
             res.send(result);
         })
+        app.delete('/items/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await collection.deleteOne(query);
+            res.send(result);
+        })
+        app.get('/myitems/:email', async (req, res) => {
+            const userEmail = req.params.email;
+            const query = { user_email: userEmail };
+            const cursor = collection.find(query);
+            const result = await cursor.toArray();
+            res.send(result)
+        })
 
 
         app.post('/items', async (req, res) => {
