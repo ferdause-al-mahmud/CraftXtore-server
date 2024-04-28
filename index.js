@@ -49,6 +49,27 @@ async function run() {
             const result = await collection.deleteOne(query);
             res.send(result);
         })
+        app.put('/items/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const item = req.body;
+            const updatedItem = {
+                $set: {
+                    item_name: item.item_name,
+                    subcategory_Name: item.subcategory_Name,
+                    short_description: item.short_description,
+                    price: item.price,
+                    rating: item.rating,
+                    customization: item.customization,
+                    processing_time: item.processing_time,
+                    stockStatus: item.stockStatus,
+                    photo: item.photo,
+                },
+            };
+            const result = await collection.updateOne(query, updatedItem, options);
+            res.send(result);
+        })
         app.get('/myitems/:email', async (req, res) => {
             const userEmail = req.params.email;
             const query = { user_email: userEmail };
@@ -60,7 +81,6 @@ async function run() {
 
         app.post('/items', async (req, res) => {
             const newitem = req.body;
-            console.log(newitem)
             const result = await collection.insertOne(newitem);
             res.send(result);
         })
