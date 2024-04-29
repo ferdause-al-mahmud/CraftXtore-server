@@ -30,9 +30,15 @@ async function run() {
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         const collection = client.db("craftDB").collection("crafts");
+        const categoryCollection = client.db("craftDB").collection("categories");
 
         app.get('/items', async (req, res) => {
             const cursor = collection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+        app.get('/categories', async (req, res) => {
+            const cursor = categoryCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         })
@@ -77,7 +83,13 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result)
         })
-
+        app.get('/items/cata/:subcategory_Name', async (req, res) => {
+            const userChoice = req.params.subcategory_Name;
+            const query = { subcategory_Name: userChoice };
+            const cursor = collection.find(query);
+            const result = await cursor.toArray();
+            res.send(result)
+        })
 
         app.post('/items', async (req, res) => {
             const newitem = req.body;
