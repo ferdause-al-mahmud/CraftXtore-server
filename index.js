@@ -83,7 +83,7 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result)
         })
-        app.get('/items/cata/:subcategory_Name', async (req, res) => {
+        app.get('/items/catagory/:subcategory_Name', async (req, res) => {
             const userChoice = req.params.subcategory_Name;
             const query = { subcategory_Name: userChoice };
             const cursor = collection.find(query);
